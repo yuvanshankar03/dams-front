@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useContext, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import UserContext from './context';
 import Sidebar from './sidebar';
 import { List } from 'react-bootstrap-icons';
 
@@ -59,7 +58,7 @@ export default function Profile() {
     if (userEmail) {
       setEmail(userEmail);
       fetchUserProfile(userEmail); 
-    }
+    }// eslint-disable-next-line
   }, [currentUser]); // Fetch user profile when the user role changes
 
   const fetchUserProfile = async (userEmail) => {
