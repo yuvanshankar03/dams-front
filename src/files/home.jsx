@@ -17,6 +17,7 @@ export default function Home() {
   const [assetData, setAssetData] = useState({ totalAssets: 0, borrowedAssets: 0, totalWorth: 0 });
   const [recentAssets, setRecentAssets] = useState([]);
   const [extensionRequests, setExtensionRequests] = useState([]);
+  const [isSessionExpiredModalOpen, setIsSessionExpiredModalOpen] = useState(false);
   const dropdownRef = useRef(null);
   const navigate = useNavigate()
   const handleshow = () => {
@@ -109,6 +110,42 @@ export default function Home() {
       fetchExtensionRequests();
     // eslint-disable-next-line
   }, []);
+
+  const openSessionExpiredModal = () => {
+    setIsSessionExpiredModalOpen(true);
+  };
+
+  const closeSessionExpiredModal = () => {
+    setIsSessionExpiredModalOpen(false);
+  }
+
+  useEffect(() => {
+    // Check token expiration when the component mounts
+    const token = localStorage.getItem(currentUser === 'admin' ? 'admintoken' : 'usertoken');
+    if (token) {
+      axios.post("/validateToken", { token })
+        .then(response => {
+          if (!response.data.valid) {
+            openSessionExpiredModal();
+          }
+        })
+        .catch(error => {
+          console.error(error);
+          // Handle error if validation request fails
+        });
+    } // eslint-disable-next-line
+  }, []);
+
+  
+  function logout() {
+    // Clear local storage
+    localStorage.removeItem('userRole');
+    localStorage.removeItem(currentUser === 'admin' ? 'adminemail' : 'useremail');
+    localStorage.removeItem(currentUser === 'admin' ? 'admintoken' : 'usertoken');
+    // Navigate to main or landing page
+    navigate('/');
+  }
+
 
 
   const fetchExtensionRequests = async () => {
@@ -299,6 +336,25 @@ export default function Home() {
        handleRequestDecline={handleRequestDecline}
        extensionRequests={extensionRequests}
        />
+       {isSessionExpiredModalOpen && (
+        <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
+          <div className="bg-white p-8 rounded-lg shadow-md">
+            <h2 className="text-xl font-semibold mb-4">Session Expired</h2>
+            <p className="mb-4">Your session has expired. Please login again to continue.</p>
+            <div className="flex justify-end">
+              <button
+                className="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300"
+                onClick={() => {
+                  logout(); // Call logout function to clear session
+                  closeSessionExpiredModal(); // Close the modal
+                }}
+              >
+                Proceed to Login
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

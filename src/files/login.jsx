@@ -18,11 +18,11 @@ export default function Login() {
     axios
       .post(`${isAdmin ? "adminlogin" : "userlogin"}`, { email, password, adminSecretInput: isAdmin ? adminSecret : undefined })
       .then((response) => {
-        console.log(response.data);
         setError("");
         setUserRole(isAdmin?'admin':'user');
         localStorage.setItem('userRole',isAdmin ? 'admin' : 'user')
-        localStorage.setItem(isAdmin?'adminemail':'useremail', email); 
+        localStorage.setItem(isAdmin?'adminemail':'useremail', email);
+        localStorage.setItem(isAdmin ? 'admintoken':'usertoken',response.data.token)
         navigate(`/home`)
       })
       .catch((error) => {
