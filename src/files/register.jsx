@@ -24,8 +24,10 @@ const Registration = () => {
         department,
         adminSecretInput: isAdmin ? adminSecret : undefined
       });
-      console.log(response.data.message);
-      navigate('/login');
+      localStorage.setItem('userRole',isAdmin ? 'admin' : 'user')
+      localStorage.setItem(isAdmin?'adminemail':'useremail', email);
+      localStorage.setItem(isAdmin ? 'admintoken':'usertoken',response.data.token)
+      navigate('/home');
     } catch (error) {
       setError(error.response.data.error || error.response.data.message);
       console.error('Registration error:', error.response.data.error);

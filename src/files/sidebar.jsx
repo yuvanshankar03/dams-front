@@ -11,6 +11,7 @@ const Sidebar = ({ userRole, handleshow }) => {
       await axios.post('/logout', { email: userEmail, currentuser: userRole === 'admin' ? 'admin' : 'user' });
       localStorage.removeItem(userRole === 'admin' ? 'adminemail' : 'useremail');
       localStorage.removeItem('userRole')
+      localStorage.removeItem(userRole === 'admin' ? 'admintoken' : 'usertoken');
       window.location.href = '/';
     } catch (error) {
       console.error('Error logging out:', error);
