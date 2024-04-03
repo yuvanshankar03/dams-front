@@ -221,11 +221,11 @@ export default function Home() {
   };
 
   return (
-    <div className="flex">
+    <div className="flex flex-col sm:flex-row sm:justify-between w-full gap-4">
       <div className="w-full p-4">
         <div className='flex items-center justify-between mb-4'>
           <div className='flex items-center gap-3'>
-            <List size={24} className='cursor-pointer' onClick={handleshow}/>
+            <List size={24} className='cursor-pointer w-10 h-10' onClick={handleshow}/>
             <h1 className="text-2xl font-semibold px-4">Welcome, {currentUser === 'admin' ? 'Admin' : 'User'}!</h1>
           </div>
           <div className='flex items-center gap-4 mr-4 relative'>
@@ -247,7 +247,7 @@ export default function Home() {
               <input
                 type="text"
                 placeholder="Search..."
-                className="border border-gray-300 p-2 rounded-md pl-8"
+                className="border border-gray-300 p-2 rounded-md pl-3 w-11/12"
                 value={searchTerm}
                 onChange={handleInputChange}
               />
@@ -276,32 +276,33 @@ export default function Home() {
         {isLoading ? (
           <p>Loading user information...</p>
         ) : (
-          <div className="flex justify-between w-full h-fit gap-4 mt-11">
+          <div className="flex flex-col sm:flex-row w-full gap-4">
             {currentuser ? (
-              <div className="flex items-center bg-white rounded-lg shadow-md p-4 w-full">
+              <div className="flex items-center bg-white rounded-lg shadow-md p-4 w-full sm:w-auto">
                 <h1 className="font-semibold text-lg">{currentuser?.username}, {currentuser?.department}</h1>
               </div>
             ) : (
-              <p className='w-full'>User information not available.</p>
+              <p className="w-full">User information not available.</p>
             )}
-            <div className="flex w-full gap-4">
-                <div className="bg-blue-500 rounded-lg p-4 text-white shadow-md flex flex-col justify-center items-center">
-                  <h2 className="text-xl font-semibold mb-2">Total Assets</h2>
-                  <CountUp end={assetData.totalAssets} duration={2} className='font-bold text-lg'/> 
+            <div className="flex flex-col sm:flex-row w-full gap-4 sm:gap-0 sm:space-x-3 sm:space-y-0">
+              <div className="w-full sm:w-1/3 bg-blue-500 rounded-lg p-4 text-white shadow-md flex flex-col justify-center items-center">
+                <h2 className="text-xl font-semibold mb-2">Total Assets</h2>
+                <CountUp end={assetData.totalAssets} duration={2} className="font-bold text-lg" />
+              </div>
+              <div className="w-full sm:w-1/3 bg-yellow-500 rounded-lg p-4 text-white shadow-md flex flex-col justify-center items-center">
+                <h2 className="text-xl font-semibold mb-2">Borrowed Assets</h2>
+                <CountUp end={assetData.borrowedAssets} duration={2} className="font-bold text-lg" />
+              </div>
+              <div className="w-full sm:w-1/3 bg-green-500 rounded-lg p-4 text-white shadow-md flex flex-col justify-center items-center">
+                <h2 className="text-xl font-semibold mb-2">Total Assets Worth</h2>
+                <div className="flex items-center gap-1">
+                  ₹<CountUp end={assetData.totalWorth} duration={2} className="font-bold text-lg" />
                 </div>
-                <div className="bg-yellow-500 rounded-lg p-4 text-white shadow-md flex flex-col justify-center items-center">
-                  <h2 className="text-xl font-semibold mb-2">Borrowed Assets</h2>
-                  <CountUp end={assetData.borrowedAssets} duration={2} className='font-bold text-lg'/> 
-                </div>
-                <div className="bg-green-500 rounded-lg p-4 text-white shadow-md flex flex-col justify-center items-center">
-                  <h2 className="text-xl font-semibold mb-2">Total Assets Worth</h2>
-                  <div className='flex items-center gap-1'>
-                  ₹<CountUp end={assetData.totalWorth} duration={2} className='font-bold text-lg'/> 
-                  </div>
-                </div>
+              </div>
             </div>
           </div>
         )}
+
         <div className='mt-10'>
           <h1>Recently Added Assets</h1>
           {recentAssets.length > 0 ? 
