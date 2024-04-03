@@ -2,7 +2,7 @@
 import Dams from './dams';
 import axios from 'axios';
 
-axios.defaults.baseURL = 'http://192.168.10.3:3001'
+axios.defaults.baseURL = 'https://dams-server-1.onrender.com'
 
 
 export default function App() {
