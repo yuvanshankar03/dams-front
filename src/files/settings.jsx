@@ -121,7 +121,7 @@ export default function Settings() {
           email: localStorage.getItem(currentUser === 'admin' ? 'adminemail' : 'useremail'),
         },
       });
-      if(response.statusText === 'OK'){
+      if(response){
         setIsChangePasswordModalOpen(false)
         setIspasswordChecked(true)
         setCurrentPassword('')
