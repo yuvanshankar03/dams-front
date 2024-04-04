@@ -54,9 +54,9 @@ const BorrowedAssetItems = ({ currentUser }) => {
   };
 
   const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return date.toLocaleString('en-IN', { timeZone: 'UTC' }); // Format the date to a locale string
-  };
+    const date = new Date(dateString); // Create date using provided date string
+    return date.toLocaleString('en-IN', { timeZone: date.getTimezoneOffset() / -60 }); // Use date's time zone
+  };  
 
   const calculateTimeDifference = (returnWithin) => {
     const currentTime = new Date();
